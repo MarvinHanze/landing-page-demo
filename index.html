@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanze Online - Demo Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fafafa; color: #1a1c1c; line-height: 1.6; }
+
+        .site-header { background: #1a1c1c; padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .logo { color: #fff; font-size: 1.25rem; font-weight: 700; text-decoration: none; }
+        .logo span { color: #3b82f6; }
+        .header-nav a { color: rgba(255,255,255,0.7); text-decoration: none; margin-left: 2rem; font-size: 0.875rem; transition: color 0.2s; }
+        .header-nav a:hover { color: #fff; }
+
+        .hero { background: linear-gradient(135deg, #1a1c1c 0%, #1e3a5f 50%, #2563eb 100%); color: #fff; padding: 6rem 2rem; text-align: center; }
+        .hero h1 { font-size: 2.75rem; font-weight: 700; margin-bottom: 1rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .hero p { font-size: 1.125rem; color: rgba(255,255,255,0.8); max-width: 600px; margin: 0 auto 2rem; }
+        .eyebrow { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: #60a5fa; margin-bottom: 0.75rem; }
+
+        .section { padding: 5rem 2rem; }
+        .section-muted { background: #f1f5f9; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .section-heading { text-align: center; margin-bottom: 3rem; }
+        .section-heading h2 { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .section-heading p { color: #64748b; max-width: 600px; margin: 0 auto; }
+
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+        .demo-card { background: #fff; border-radius: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04); transition: transform 0.25s ease, box-shadow 0.25s ease; text-decoration: none; color: inherit; display: flex; flex-direction: column; }
+        .demo-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,0.1); }
+        .card-visual { height: 200px; display: flex; align-items: center; justify-content: center; font-size: 4rem; }
+        .card-visual.inv { background: linear-gradient(135deg, #2563eb, #1d4ed8); }
+        .card-visual.crm { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+        .card-visual.task { background: linear-gradient(135deg, #059669, #047857); }
+        .card-visual.doc { background: linear-gradient(135deg, #ea580c, #c2410c); }
+        .card-visual.placeholder { background: linear-gradient(135deg, #334155, #1e293b); }
+        .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+        .card-tag { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #3b82f6; margin-bottom: 0.5rem; }
+        .card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .card-desc { color: #64748b; font-size: 0.875rem; flex: 1; margin-bottom: 1rem; }
+        .card-link { font-size: 0.875rem; font-weight: 600; color: #2563eb; display: flex; align-items: center; gap: 0.375rem; }
+        .card-link span { transition: transform 0.2s; }
+        .demo-card:hover .card-link span { transform: translateX(4px); }
+
+        .status-badge { display: inline-flex; align-items: center; gap: 0.375rem; font-size: 0.7rem; font-weight: 500; padding: 0.25rem 0.625rem; border-radius: 999px; }
+        .status-live { background: #dcfce7; color: #166534; }
+        .status-soon { background: #fef3c7; color: #92400e; }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; }
+        .status-live .status-dot { background: #16a34a; }
+        .status-soon .status-dot { background: #f59e0b; }
+
+        .cta-banner { background: #1a1c1c; color: #fff; padding: 4rem 2rem; text-align: center; }
+        .cta-banner h2 { font-size: 1.75rem; margin-bottom: 0.75rem; }
+        .cta-banner p { color: rgba(255,255,255,0.7); margin-bottom: 1.5rem; }
+
+        .site-footer { background: #111318; color: rgba(255,255,255,0.6); padding: 3rem 2rem; }
+        .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .footer-inner a { color: rgba(255,255,255,0.8); text-decoration: none; }
+        .footer-inner a:hover { color: #fff; }
+
+        .button { display: inline-flex; align-items: center; padding: 0.75rem 1.5rem; border-radius: 8px; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+        .button-primary { background: #2563eb; color: #fff; }
+        .button-primary:hover { background: #1d4ed8; }
+        .button-outline { border: 2px solid rgba(255,255,255,0.3); color: #fff; }
+        .button-outline:hover { border-color: #fff; background: rgba(255,255,255,0.1); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .header-nav { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/" class="logo">Hanze<span>Online</span></a>
+            <nav class="header-nav">
+                <a href="https://hanzeonline.nl">Website</a>
+                <a href="https://hanzeonline.nl/portfolio/">Portfolio</a>
+                <a href="https://hanzeonline.nl/contact/">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <p class="eyebrow">Demo Portal</p>
+        <h1>Onze projecten, live te bekijken</h1>
+        <p>Ontdek onze digitale oplossingen. Elke demo is volledig functioneel en te testen met meegeleverde inloggegevens.</p>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <p class="eyebrow">Demos</p>
+                <h2>Beschikbare projecten</h2>
+                <p>Klik op een project om de live demo te openen. Elke demo heeft een eigen inlog.</p>
+            </div>
+            <div class="card-grid">
+                <a href="/inventory-manager/" class="demo-card">
+                    <div class="card-visual inv">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12.01"/></svg>
+                    </div>
+                    <div class="card-body">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                            <span class="card-tag">Beheer systeem</span>
+                            <span class="status-badge status-live"><span class="status-dot"></span> Live</span>
+                        </div>
+                        <h3 class="card-title">Inventory Manager</h3>
+                        <p class="card-desc">Asset tracking en beheer systeem. Scan barcode's, wijs assets toe aan medewerkers en bekijk rapportages.</p>
+                        <span class="card-link">Open demo <span>&rarr;</span></span>
+                    </div>
+                </a>
+
+                <div class="demo-card" style="opacity:0.6;cursor:default;">
+                    <div class="card-visual placeholder">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <div class="card-body">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+                            <span class="card-tag">Wordt aan gewerkt</span>
+                            <span class="status-badge status-soon"><span class="status-dot"></span> Binnenkort</span>
+                        </div>
+                        <h3 class="card-title">Meer projecten</h3>
+                        <p class="card-desc">Nieuwe demo's worden hier toegevoegd zodra ze gereed zijn. Houd deze pagina in de gaten.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-banner">
+        <h2>Een eigen project laten bouwen?</h2>
+        <p>Neem contact op voor de mogelijkheden. Wij helpen u graag verder.</p>
+        <a href="https://hanzeonline.nl/contact/" class="button button-primary">Neem contact op</a>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>2026 &middot; <a href="https://hanzeonline.nl">Hanzeonline.nl</a></p>
+            <p>Gevestigd in Kampen &middot; KVK 94348677</p>
+        </div>
+    </footer>
+</body>
+</html>
