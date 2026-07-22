@@ -41,10 +41,34 @@
         .eyebrow { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: #93c5fd; margin-bottom: 1rem; padding: 0.3rem 0.8rem; background: rgba(96,165,250,0.1); border: 1px solid rgba(96,165,250,0.25); border-radius: 999px; }
         .eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,0.2); }
 
-        .stats-row { display: flex; justify-content: center; gap: 3.5rem; margin-top: 2.5rem; }
-        .stat { text-align: center; }
         .stat-num { font-family: 'Space Grotesk', sans-serif; font-size: 2.1rem; font-weight: 700; background: linear-gradient(135deg, #93c5fd, #c4b5fd); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.15rem; }
+
+        .bento-hero { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(90px, auto); gap: 1rem; max-width: 1080px; margin: 0 auto; text-align: left; }
+        .bento-tile { background: linear-gradient(160deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015)); border: 1px solid rgba(255,255,255,0.09); border-radius: 22px; padding: 1.75rem; backdrop-filter: blur(8px); position: relative; overflow: hidden; }
+        .bento-headline { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; gap: .9rem; }
+        .bento-headline h1 { font-size: clamp(1.9rem, 3.4vw, 2.6rem); font-weight: 700; line-height: 1.12; margin: 0; }
+        .bento-headline p { font-size: 1rem; color: rgba(255,255,255,0.65); margin: 0; max-width: 40ch; }
+        .bento-preview { grid-column: span 2; grid-row: span 2; }
+        .bento-tile-label { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1.1rem; }
+        .mosaic { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; }
+        .mosaic-chip { aspect-ratio: 1; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'Space Grotesk', sans-serif; font-size: 0.68rem; font-weight: 700; box-shadow: 0 6px 14px rgba(0,0,0,0.25); transition: transform .25s cubic-bezier(.2,.8,.2,1); }
+        .mosaic-chip:hover { transform: translateY(-3px) scale(1.05); }
+        .mosaic-chip--more { background: rgba(255,255,255,0.06) !important; color: rgba(255,255,255,0.55) !important; box-shadow: none; border: 1px dashed rgba(255,255,255,0.2); font-size: 0.62rem; }
+        .bento-stat { grid-column: span 1; display: flex; flex-direction: column; justify-content: center; align-items: flex-start; }
+        .bento-stat--muted { justify-content: center; }
+        .stack-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem; }
+        .stack-badges span { font-size: 0.68rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 999px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.7); }
+
+        @media (max-width: 900px) {
+            .bento-hero { grid-template-columns: repeat(2, 1fr); }
+            .bento-headline, .bento-preview { grid-column: span 2; grid-row: span 1; }
+        }
+        @media (max-width: 560px) {
+            .bento-hero { grid-template-columns: 1fr; }
+            .bento-headline, .bento-preview, .bento-stat { grid-column: span 1; }
+            .mosaic { grid-template-columns: repeat(6, 1fr); }
+        }
 
         .section { padding: 5.5rem 2rem; }
         .section-muted { background: #f1f5f9; }
@@ -145,13 +169,48 @@
     <section class="hero">
         <div class="hero-glow" aria-hidden="true"></div>
         <div class="hero-grid" aria-hidden="true"></div>
-        <p class="eyebrow">Demo Portal</p>
-        <h1>Onze projecten, live te bekijken</h1>
-        <p>Ontdek onze digitale oplossingen. Elke demo is volledig functioneel en te testen met meegeleverde inloggegevens.</p>
-        <div class="stats-row">
-            <div class="stat"><div class="stat-num">11</div><div class="stat-label">Demos</div></div>
-            <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Functioneel</div></div>
-            <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Beschikbaar</div></div>
+        <div class="bento-hero">
+            <div class="bento-tile bento-headline">
+                <p class="eyebrow">Demo Portal</p>
+                <h1>Onze projecten,<br>live te bekijken</h1>
+                <p>Ontdek onze digitale oplossingen. Elke demo is volledig functioneel en te testen met meegeleverde inloggegevens.</p>
+                <a href="#demos" class="button button-primary" style="align-self:flex-start;margin-top:.5rem;">Bekijk de demo's <span aria-hidden="true">&darr;</span></a>
+            </div>
+            <div class="bento-tile bento-preview">
+                <p class="bento-tile-label">11 live projecten</p>
+                <div class="mosaic">
+                    <span class="mosaic-chip" style="background:#2563eb;">IM</span>
+                    <span class="mosaic-chip" style="background:#059669;">ESG</span>
+                    <span class="mosaic-chip" style="background:#ea580c;">INC</span>
+                    <span class="mosaic-chip" style="background:#7c3aed;">TIJD</span>
+                    <span class="mosaic-chip" style="background:#e11d48;">KP</span>
+                    <span class="mosaic-chip" style="background:#f59e0b;">VB</span>
+                    <span class="mosaic-chip" style="background:#8b5cf6;">SAAS</span>
+                    <span class="mosaic-chip" style="background:#0ea5e9;">OS</span>
+                    <span class="mosaic-chip" style="background:#e67e22;">TIM</span>
+                    <span class="mosaic-chip" style="background:#c1583a;">BP</span>
+                    <span class="mosaic-chip" style="background:#151312;color:#c9a15a;">MK</span>
+                    <span class="mosaic-chip mosaic-chip--more">+meer</span>
+                </div>
+            </div>
+            <div class="bento-tile bento-stat">
+                <div class="stat-num">11</div>
+                <div class="stat-label">Demo's</div>
+            </div>
+            <div class="bento-tile bento-stat">
+                <div class="stat-num">100%</div>
+                <div class="stat-label">Functioneel</div>
+            </div>
+            <div class="bento-tile bento-stat">
+                <div class="stat-num">24/7</div>
+                <div class="stat-label">Beschikbaar</div>
+            </div>
+            <div class="bento-tile bento-stat bento-stat--muted">
+                <div class="stack-badges">
+                    <span>PHP</span><span>MySQL</span><span>Docker</span>
+                </div>
+                <div class="stat-label">Tech stack</div>
+            </div>
         </div>
     </section>
 
