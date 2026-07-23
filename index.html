@@ -33,8 +33,15 @@
         .hamburger span { display: block; width: 22px; height: 2px; background: #fff; margin: 5px 0; transition: all 0.3s; border-radius: 2px; }
 
         .hero { background: #0d0f13; color: #fff; padding: 2.75rem 2rem 2.25rem; text-align: center; position: relative; overflow: hidden; }
-        .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 44px 44px; -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 30%, transparent 75%); mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 30%, transparent 75%); }
-        .hero-glow { position: absolute; top: -30%; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; background: radial-gradient(circle, rgba(59,130,246,0.22) 0%, rgba(139,92,246,0.1) 35%, transparent 65%); filter: blur(10px); pointer-events: none; }
+        /* .hero > .hero-grid / .hero > .hero-glow (compound selectors, not just
+           .hero-grid/.hero-glow) so these decorative layers reliably win over the
+           .hero > * rule below despite equal base specificity — without this, the
+           two rules tie on specificity and the LATER one in source order (.hero > *)
+           silently wins, resetting these back to position:relative. That turned
+           them into normal block-flow elements taking up ~900px of real vertical
+           space above the fold, instead of an absolutely-positioned background. */
+        .hero > .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 44px 44px; -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 30%, transparent 75%); mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, black 30%, transparent 75%); }
+        .hero > .hero-glow { position: absolute; top: -30%; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; background: radial-gradient(circle, rgba(59,130,246,0.22) 0%, rgba(139,92,246,0.1) 35%, transparent 65%); filter: blur(10px); pointer-events: none; }
         .hero > * { position: relative; }
         .hero h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 700; margin-bottom: 1.1rem; max-width: 760px; margin-left: auto; margin-right: auto; line-height: 1.1; }
         .hero p { font-size: 1.125rem; color: rgba(255,255,255,0.68); max-width: 580px; margin: 0 auto 2.25rem; }
