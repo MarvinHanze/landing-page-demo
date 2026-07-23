@@ -154,10 +154,10 @@
     <header class="site-header">
         <div class="header-inner">
             <a href="/" class="logo">Hanze<span>Online</span></a>
-            <button class="hamburger" onclick="document.querySelector('.header-nav').classList.toggle('open')" aria-label="Menu">
+            <button class="hamburger" id="hamburgerToggle" aria-label="Menu" aria-expanded="false" aria-controls="headerNav">
                 <span></span><span></span><span></span>
             </button>
-            <nav class="header-nav">
+            <nav class="header-nav" id="headerNav">
                 <a href="https://hanzeonline.nl">Website</a>
                 <a href="https://hanzeonline.nl/portfolio/">Portfolio</a>
                 <a href="https://hanzeonline.nl/contact/">Contact</a>
@@ -223,11 +223,11 @@
                 <h2>Beschikbare projecten</h2>
                 <p>Klik op een project om de live demo te openen. Elke demo heeft een eigen inlog.</p>
             </div>
-            <div class="filter-row" role="tablist" aria-label="Filter demos op categorie">
-                <button class="filter-pill is-active" data-filter="alle">Alle</button>
-                <button class="filter-pill" data-filter="intern">Interne tools</button>
-                <button class="filter-pill" data-filter="klant">Klantgericht</button>
-                <button class="filter-pill" data-filter="platform">Platforms &amp; websites</button>
+            <div class="filter-row" role="group" aria-label="Filter demos op categorie">
+                <button class="filter-pill is-active" data-filter="alle" aria-pressed="true">Alle</button>
+                <button class="filter-pill" data-filter="intern" aria-pressed="false">Interne tools</button>
+                <button class="filter-pill" data-filter="klant" aria-pressed="false">Klantgericht</button>
+                <button class="filter-pill" data-filter="platform" aria-pressed="false">Platforms &amp; websites</button>
             </div>
             <div class="card-grid">
 
@@ -831,6 +831,17 @@
     <script>
         (function () {
             "use strict";
+
+            // Mobiel hamburgermenu.
+            var hamburger = document.getElementById("hamburgerToggle");
+            var headerNav = document.getElementById("headerNav");
+            if (hamburger && headerNav) {
+                hamburger.addEventListener("click", function () {
+                    var isOpen = headerNav.classList.toggle("open");
+                    hamburger.setAttribute("aria-expanded", isOpen ? "true" : "false");
+                });
+            }
+
             var cards = Array.prototype.slice.call(document.querySelectorAll(".demo-card"));
 
             // Scroll-reveal: kaarten faden/schuiven in zodra ze in beeld komen.
@@ -855,8 +866,12 @@
             var pills = Array.prototype.slice.call(document.querySelectorAll(".filter-pill"));
             pills.forEach(function (pill) {
                 pill.addEventListener("click", function () {
-                    pills.forEach(function (p) { p.classList.remove("is-active"); });
+                    pills.forEach(function (p) {
+                        p.classList.remove("is-active");
+                        p.setAttribute("aria-pressed", "false");
+                    });
                     pill.classList.add("is-active");
+                    pill.setAttribute("aria-pressed", "true");
                     var filter = pill.getAttribute("data-filter");
                     cards.forEach(function (card) {
                         var show = filter === "alle" || card.getAttribute("data-group") === filter;
