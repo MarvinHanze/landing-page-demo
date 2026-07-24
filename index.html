@@ -114,6 +114,25 @@
         .card-visual svg { width: 100%; height: 100%; transition: transform 0.4s ease; }
         .demo-card:hover .card-visual svg { transform: scale(1.035); }
 
+        .card-qr-btn { position: absolute; top: 0.75rem; right: 0.75rem; z-index: 2; width: 32px; height: 32px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.25); background: rgba(15,23,42,0.45); backdrop-filter: blur(6px); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transform: translateY(-4px); transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease; }
+        .demo-card:hover .card-qr-btn, .card-qr-btn:focus-visible { opacity: 1; transform: translateY(0); }
+        .card-qr-btn:hover { background: rgba(15,23,42,0.75); }
+        @media (hover: none) { .card-qr-btn { opacity: 1; transform: translateY(0); } }
+
+        .live-status-pill { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.1rem; padding: 0.4rem 0.9rem; border-radius: 999px; background: #f1f5f9; color: #475569; font-size: 0.8rem; font-weight: 600; }
+        .live-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #94a3b8; flex-shrink: 0; }
+        .live-status-pill.is-ok .live-status-dot { background: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.18); }
+        .live-status-pill.is-ok { color: #166534; background: #f0fdf4; }
+        .live-status-pill.is-degraded .live-status-dot { background: #d97706; box-shadow: 0 0 0 3px rgba(217,119,6,0.18); }
+        .live-status-pill.is-degraded { color: #92400e; background: #fffbeb; }
+
+        .qr-modal-backdrop { position: fixed; inset: 0; background: rgba(15,23,42,0.55); backdrop-filter: blur(3px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 1.5rem; }
+        .qr-modal-backdrop.is-open { display: flex; }
+        .qr-modal { background: #fff; border-radius: 20px; padding: 1.75rem; max-width: 320px; width: 100%; text-align: center; box-shadow: 0 30px 60px -12px rgba(15,23,42,0.35); }
+        .qr-modal img { width: 220px; height: 220px; border-radius: 12px; border: 1px solid #e2e8f0; margin: 0 auto 1rem; display: block; }
+        .qr-modal p { font-size: 0.82rem; color: #64748b; word-break: break-all; margin-bottom: 1rem; }
+        .qr-modal button { width: 100%; }
+
         .card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
         .card-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
         .card-title { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 0.5rem; }
@@ -243,6 +262,10 @@
                 <p class="eyebrow">Demos</p>
                 <h2>Beschikbare projecten</h2>
                 <p>Klik op een project om de live demo te openen. Elke demo heeft een eigen inlog.</p>
+                <div class="live-status-pill" id="liveStatusPill" aria-live="polite">
+                    <span class="live-status-dot" id="liveStatusDot"></span>
+                    <span id="liveStatusText">Live status wordt gecontroleerd&hellip;</span>
+                </div>
             </div>
             <div class="filter-row" role="group" aria-label="Filter demos op categorie">
                 <button class="filter-pill is-active" data-filter="alle" aria-pressed="true">Alle</button>
@@ -252,8 +275,9 @@
             </div>
             <div class="card-grid">
 
-                <a href="https://demo.hanzeonline.nl/inventory-manager" class="demo-card" data-group="intern">
+                <a href="https://demo.hanzeonline.nl/inventory-manager" class="demo-card" data-check-url="/inventory-manager" data-group="intern">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/inventory-manager" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="inv-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#2563eb"/><stop offset="100%" style="stop-color:#1d4ed8"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#inv-bg)"/>
@@ -289,8 +313,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/esg-manager" class="demo-card" data-group="intern">
+                <a href="https://demo.hanzeonline.nl/esg-manager" class="demo-card" data-check-url="/esg-manager" data-group="intern">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/esg-manager" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="esg-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#059669"/><stop offset="100%" style="stop-color:#047857"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#esg-bg)"/>
@@ -321,8 +346,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/incidenten-platform" class="demo-card" data-group="intern">
+                <a href="https://demo.hanzeonline.nl/incidenten-platform" class="demo-card" data-check-url="/incidenten-platform" data-group="intern">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/incidenten-platform" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="inc-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#ea580c"/><stop offset="100%" style="stop-color:#c2410c"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#inc-bg)"/>
@@ -361,8 +387,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/tijdregistratie" class="demo-card" data-group="intern">
+                <a href="https://demo.hanzeonline.nl/tijdregistratie" class="demo-card" data-check-url="/tijdregistratie" data-group="intern">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/tijdregistratie" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="tijd-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#7c3aed"/><stop offset="100%" style="stop-color:#6d28d9"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#tijd-bg)"/>
@@ -414,8 +441,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/klantportaal" class="demo-card" data-group="klant">
+                <a href="https://demo.hanzeonline.nl/klantportaal" class="demo-card" data-check-url="/klantportaal" data-group="klant">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/klantportaal" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="klant-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e11d48"/><stop offset="100%" style="stop-color:#be123c"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#klant-bg)"/>
@@ -461,8 +489,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/voorraadbeheer" class="demo-card" data-group="intern">
+                <a href="https://demo.hanzeonline.nl/voorraadbeheer" class="demo-card" data-check-url="/voorraadbeheer" data-group="intern">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/voorraadbeheer" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="voor-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#f59e0b"/><stop offset="100%" style="stop-color:#d97706"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#voor-bg)"/>
@@ -504,8 +533,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/saas-platform/login" class="demo-card" data-group="platform">
+                <a href="https://demo.hanzeonline.nl/saas-platform/login" class="demo-card" data-check-url="/saas-platform/login" data-group="platform">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/saas-platform/login" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="saas-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#8b5cf6"/><stop offset="100%" style="stop-color:#7c3aed"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#saas-bg)"/>
@@ -538,8 +568,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/timmerman" class="demo-card" data-group="platform">
+                <a href="https://demo.hanzeonline.nl/timmerman" class="demo-card" data-check-url="/timmerman" data-group="platform">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/timmerman" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="tim-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#e67e22"/><stop offset="100%" style="stop-color:#d35400"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#tim-bg)"/>
@@ -567,8 +598,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/hanzeos" class="demo-card" data-group="platform">
+                <a href="https://demo.hanzeonline.nl/hanzeos" class="demo-card" data-check-url="/hanzeos" data-group="platform">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/hanzeos" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="hanzeos-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0ea5e9"/><stop offset="100%" style="stop-color:#0284c7"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#hanzeos-bg)"/>
@@ -604,8 +636,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/boekpro/boeken.php" class="demo-card" data-group="klant">
+                <a href="https://demo.hanzeonline.nl/boekpro/boeken.php" class="demo-card" data-check-url="/boekpro/boeken.php" data-group="klant">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/boekpro/boeken.php" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="boek-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#c1583a"/><stop offset="100%" style="stop-color:#a3452a"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#boek-bg)"/>
@@ -644,8 +677,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/menukaart/menu.php" class="demo-card" data-group="klant">
+                <a href="https://demo.hanzeonline.nl/menukaart/menu.php" class="demo-card" data-check-url="/menukaart/menu.php" data-group="klant">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/menukaart/menu.php" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="menu-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#292524"/><stop offset="100%" style="stop-color:#151312"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#menu-bg)"/>
@@ -678,8 +712,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/hanzevoice/board.php?w=demo" class="demo-card" data-group="platform">
+                <a href="https://demo.hanzeonline.nl/hanzevoice/board.php?w=demo" class="demo-card" data-check-url="/hanzevoice/board.php" data-group="platform">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/hanzevoice/board.php?w=demo" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="vx-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#6366f1"/><stop offset="100%" style="stop-color:#4338ca"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#vx-bg)"/>
@@ -715,8 +750,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/hanzestatus/status.php?w=demo" class="demo-card" data-group="platform">
+                <a href="https://demo.hanzeonline.nl/hanzestatus/status.php?w=demo" class="demo-card" data-check-url="/hanzestatus/status.php" data-group="platform">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/hanzestatus/status.php?w=demo" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="hs-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#10b981"/><stop offset="100%" style="stop-color:#047857"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#hs-bg)"/>
@@ -774,8 +810,9 @@
                     </div>
                 </a>
 
-                <a href="https://demo.hanzeonline.nl/hanzeforge/" class="demo-card" data-group="platform">
+                <a href="https://demo.hanzeonline.nl/hanzeforge/" class="demo-card" data-check-url="/hanzeforge/" data-group="platform">
                     <div class="card-visual">
+                        <button type="button" class="card-qr-btn" data-qr-url="https://demo.hanzeonline.nl/hanzeforge/" aria-label="Toon QR-code om deze demo op je telefoon te openen" title="Open op je telefoon (QR)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><line x1="14" y1="14" x2="14" y2="14.01"/><line x1="17.5" y1="14" x2="17.5" y2="17.5"/><line x1="14" y1="17.5" x2="17.5" y2="17.5"/><line x1="14" y1="21" x2="17.5" y2="21"/><line x1="21" y1="14" x2="21" y2="21"/></svg></button>
                         <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                             <defs><linearGradient id="hf-bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4f46e5"/><stop offset="100%" style="stop-color:#7c3aed"/></linearGradient></defs>
                             <rect width="400" height="220" fill="url(#hf-bg)"/>
@@ -848,6 +885,14 @@
             <p>Gevestigd in Kampen &middot; KVK 94348677</p>
         </div>
     </footer>
+
+    <div class="qr-modal-backdrop" id="qrModalBackdrop">
+        <div class="qr-modal" role="dialog" aria-modal="true" aria-label="QR-code voor demo">
+            <img id="qrModalImg" src="" alt="QR-code" width="220" height="220">
+            <p id="qrModalUrl"></p>
+            <button type="button" class="button button-primary" id="qrModalClose" style="justify-content:center;">Sluiten</button>
+        </div>
+    </div>
 
     <script>
         (function () {
@@ -980,6 +1025,93 @@
                     }
                 });
             });
+
+            // Live bereikbaarheidscheck: elke kaart heeft data-check-url (hetzelfde-origin pad
+            // van de bijbehorende demo). We doen een lichte fetch per demo, werken het "Live"-
+            // badge op de kaart bij naar "Traag"/"Offline" bij een fout, en tonen een
+            // samenvattend "X/14 bereikbaar"-pilletje bovenaan de sectie.
+            function checkLiveStatus() {
+                var checkCards = cards.filter(function (c) { return c.getAttribute("data-check-url"); });
+                var pill = document.getElementById("liveStatusPill");
+                var dot = document.getElementById("liveStatusDot");
+                var text = document.getElementById("liveStatusText");
+                if (!checkCards.length || !pill) return;
+
+                var results = { ok: 0, total: checkCards.length, done: 0 };
+
+                function finish() {
+                    pill.classList.remove("is-ok", "is-degraded");
+                    if (results.ok === results.total) {
+                        pill.classList.add("is-ok");
+                    } else if (results.ok > 0) {
+                        pill.classList.add("is-degraded");
+                    }
+                    text.textContent = results.ok + " / " + results.total + " demo's bereikbaar · zojuist gecontroleerd";
+                }
+
+                checkCards.forEach(function (card) {
+                    var url = card.getAttribute("data-check-url");
+                    var badge = card.querySelector(".status-badge");
+                    var controller = ("AbortController" in window) ? new AbortController() : null;
+                    var timeout = setTimeout(function () { if (controller) controller.abort(); }, 6000);
+
+                    fetch(url, { method: "GET", cache: "no-store", signal: controller ? controller.signal : undefined, credentials: "omit" })
+                        .then(function (res) {
+                            clearTimeout(timeout);
+                            var reachable = res.status < 500;
+                            if (reachable) results.ok++;
+                            if (badge) {
+                                badge.classList.toggle("status-live", reachable);
+                                badge.innerHTML = reachable
+                                    ? '<span class="status-dot"></span> Live'
+                                    : '<span class="status-dot" style="background:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,0.18);"></span> Traag bereikbaar';
+                            }
+                        })
+                        .catch(function () {
+                            clearTimeout(timeout);
+                            // Netwerkfout/timeout: laten we het bestaande "Live"-badge gewoon
+                            // staan i.p.v. hem als "offline" te bestempelen op basis van een
+                            // client-side fetch-fout (kan ook een CORS-verschil/adblocker zijn,
+                            // geen betrouwbaar bewijs dat de demo zelf plat ligt). Telt niet mee
+                            // als "ok", maar overschrijft de badge niet met een foutieve claim.
+                        })
+                        .finally(function () {
+                            results.done++;
+                            if (results.done === results.total) finish();
+                        });
+                });
+            }
+            checkLiveStatus();
+
+            // QR-modal: opent een QR-code van de demo-URL zodat een bezoeker de demo direct op
+            // zijn/haar telefoon kan openen. Losstaand van de kaart-link zelf (stopPropagation
+            // voorkomt dat de klik ook de <a> activeert).
+            var qrBackdrop = document.getElementById("qrModalBackdrop");
+            var qrImg = document.getElementById("qrModalImg");
+            var qrUrlText = document.getElementById("qrModalUrl");
+            var qrClose = document.getElementById("qrModalClose");
+
+            function openQrModal(url) {
+                qrImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + encodeURIComponent(url);
+                qrImg.alt = "QR-code voor " + url;
+                qrUrlText.textContent = url;
+                qrBackdrop.classList.add("is-open");
+            }
+            function closeQrModal() {
+                qrBackdrop.classList.remove("is-open");
+                qrImg.src = "";
+            }
+
+            document.querySelectorAll(".card-qr-btn").forEach(function (btn) {
+                btn.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    openQrModal(btn.getAttribute("data-qr-url"));
+                });
+            });
+            qrClose.addEventListener("click", closeQrModal);
+            qrBackdrop.addEventListener("click", function (e) { if (e.target === qrBackdrop) closeQrModal(); });
+            document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeQrModal(); });
         })();
     </script>
 </body>
